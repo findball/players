@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Player list</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background-color: #101910;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: #00b34a;
+      color: white;
+      text-align: center;
+      padding: 15px;
+      font-size: 20px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .container {
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 10px;
+    }
+
+    #searchInput {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #081108;
+      border-radius: 10px;
+      font-size: 16px;
+      margin-top: 10px;
+      margin-bottom: 20px;
+      box-sizing: border-box;
+    }
+
+    .player-card {
+      background-color: #081108;
+      border-radius: 15px;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+      padding: 18px;
+      margin-bottom: 15px;
+      transition: transform 0.15s ease;
+    }
+
+    .player-card:hover {
+      transform: scale(1.02);
+    }
+
+    .player-name {
+      font-size: 18px;
+      font-weight: bold;
+      color: #ffffff;
+    }
+
+    .player-info {
+      margin-top: 8px;
+      color: #ffffff;
+      font-size: 15px;
+    }
+
+    .position {
+      display: inline-block;
+      background-color: #00b34a;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 8px;
+      font-size: 14px;
+      margin-top: 6px;
+    }
+
+    a.call-link {
+      color: #007bff;
+      text-decoration: none;
+    }
+
+    a.call-link:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 600px) {
+      header {
+        font-size: 18px;
+        padding: 12px;
+      }
+
+      .player-card {
+        padding: 15px;
+      }
+
+      .player-name {
+        font-size: 17px;
+      }
+
+      .player-info {
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    PLAYERS
+  </header>
+
+  <div class="container">
+    <input type="text" id="searchInput" placeholder="Search by name or position...">
+
+    <div id="playerList"></div>
+  </div>
+
+  <script>
+    const players = [
+      { name: 'Martinez', position: 'goalkeeper', team: 'Argentina', age: 20, panchayath: 'East Kallada', phone: '9876543210' },
+      { name: 'Ronaldo', position: 'Forward', team: 'Portugal', age: 21, panchayath: 'East Kallada', phone: '9847123456' },
+      { name: 'Messi', position: 'Forward', team: 'Argentina', age: 18, panchayath: 'East Kallada', phone: '9544436347' },
+      { name: 'Neymar', position: 'Neymar', team: 'Brazil', age: 19, panchayath: 'East Kallada', phone: '9746125896' },
+      { name: 'Neymar', position: 'Neymar', team: 'Brazil', age: 19, panchayath: 'East Kallada', phone: '9746125896' },
+    ];
+
+    const playerList = document.getElementById('playerList');
+    const searchInput = document.getElementById('searchInput');
+
+    function renderPlayers(data) {
+      const sorted = [...data].sort((a, b) => a.name.localeCompare(b.name));
+      playerList.innerHTML = '';
+      sorted.forEach(p => {
+        const card = document.createElement('div');
+        card.className = 'player-card';
+        card.innerHTML = `
+          <div class="player-name">${p.name}</div>
+          <div class="position">${p.position}</div>
+          <div class="player-info">🎯 <strong>Age:</strong> ${p.age}</div>
+          <div class="player-info">🏠 <strong>Team:</strong> ${p.team}</div>
+          <div class="player-info">🏡 <strong>Panchayath:</strong> ${p.panchayath}</div>
+          <div class="player-info">📞 <strong>Phone:</strong> <a href="tel:${p.phone}" class="call-link">${p.phone}</a></div>
+        `;
+        playerList.appendChild(card);
+      });
+    }
+
+    searchInput.addEventListener('input', () => {
+      const query = searchInput.value.toLowerCase();
+      const filtered = players.filter(p =>
+        p.name.toLowerCase().includes(query) ||
+        p.position.toLowerCase().includes(query)
+      );
+      renderPlayers(filtered);
+    });
+
+    renderPlayers(players);
+  </script>
+</body>
+</html>
